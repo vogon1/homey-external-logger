@@ -40,7 +40,13 @@ require('jsdom/lib/old-api').env({
   }
 
   function listenManagerDevices (io) {
-    var socket = io.connect(setup.protocol + '://' + setup.ip + '/realtime/manager/devices/', {query: 'token=' + setup.bearer_token, transports: ['websocket', 'polling']})
+    var socket = io.connect(setup.protocol + '://' + setup.ip + '/realtime/manager/devices/',
+          { extraHeaders: { 
+                Cookie: setup.cookie,
+                "User-Agent": setup.useragent
+              },
+            transports: ['websocket', 'polling'] 
+          })
     var _onevent = socket.onevent
     socket.on('disconnect', function() {
       console.log('Got disconnect!')
